@@ -2,5 +2,6 @@
 
 #include "BuildingEscape.h"
 #include "Modules/ModuleManager.h"
+#include "GameFramework/Actor.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, BuildingEscape, "BuildingEscape" );
