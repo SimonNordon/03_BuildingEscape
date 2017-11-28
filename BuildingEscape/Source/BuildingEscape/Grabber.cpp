@@ -24,7 +24,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting for duty!"));
+	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting for duty!"));			//Print String to World for debugging purposes.
 	
 }
 
@@ -38,56 +38,52 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	// Ray-cast out to the reach distance
 	// See what we hit
 
-	FVector PlayerViewPointLocation;
-	FRotator PlayerViewPointRotation;
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+	FVector PlayerViewPointLocation;										//Instatiate a vector for the players location.
+	FRotator PlayerViewPointRotation;										//Instatiate a rotator for their rotation.
+
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(				//Use the function GetPlayerViewPoint which Gets AND Sets the
+																			//input values. We pass in the variables while getting.
 		OUT PlayerViewPointLocation,
 		OUT PlayerViewPointRotation
 	);
 
-	/*FString PlayerLocal = PlayerViewPointLocation.ToString();
-	FString PlayerRotate = PlayerViewPointRotation.ToString();
+		
+	FVector LineTraceEnd = PlayerViewPointLocation + (PlayerViewPointRotation.Vector() * Reach);	//Add our location to the vectorized rotation, which is extended by our Reach.
 
-	UE_LOG(LogTemp, Warning, TEXT("%s %s"), *PlayerLocal, *PlayerRotate);*/
-
-	// draw a red trace in the world to visualise.
-
+	FString LineWarning = LineTraceEnd.ToString();							
 	
-	FVector LineTraceEnd = PlayerViewPointLocation + (PlayerViewPointRotation.Vector() * Reach);
-	FString LineWarning = LineTraceEnd.ToString();
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LineWarning);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *LineWarning);						//Print Linetraceend for debugging purposes.
 
-	DrawDebugLine(
-		GetWorld(),
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FColor(255, 0, 0),
-		false,
-		0.f,
-		0.f,
-		10.f
+	DrawDebugLine(															//engine method to draw our ray cast with several parameters.
+		GetWorld(),															//we want it in our current world.
+		PlayerViewPointLocation,											//starts at veiwer location
+		LineTraceEnd,														//ends at extent of our ray cast
+		FColor(255, 0, 0),													//make it red
+		false,																//no persistant lines
+		0.f,																//no float time
+		0.f,																//no depth priority
+		10.f																//10cm thick.
 	);
 
 	//Line Trace (a.k.a Ray-Cast) out to reach distance.
 	//setup params
 
-	FCollisionQueryParams TraceParams (FName(TEXT("")), false, GetOwner());
+	FCollisionQueryParams TraceParams (FName(TEXT("")), false, GetOwner());	//a filter for the ray cast?
 
-	FHitResult Hit;
+	FHitResult Hit;															//new var of type FHitResult
 
-	GetWorld()->LineTraceSingleByObjectType(
-		OUT Hit,
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
-		TraceParams
+	GetWorld()->LineTraceSingleByObjectType(								//call the getworld function raycast by object type
+		OUT Hit,															//returns a hit
+		PlayerViewPointLocation,											//start ray trace location
+		LineTraceEnd,														//end ray tray location
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),	//object filtering
+		TraceParams															//additional parameters.
 	);
 
-	AActor* ActorHit = Hit.GetActor();
+	AActor* ActorHit = Hit.GetActor();										//store a reference to the actor hit
 	if (ActorHit) {
 
-		UE_LOG(LogTemp, Warning, TEXT("Line trace hit: %s"), *(ActorHit->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("Line trace hit: %s"), *(ActorHit->GetName()));	//if the actor was hit, print its name in the log.
 		//see what we het
 	}
 }

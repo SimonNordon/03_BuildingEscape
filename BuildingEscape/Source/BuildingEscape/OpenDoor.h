@@ -22,8 +22,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	void OpenDoor();
-	void CloseDoor();
+	void OpenDoor();							//instatiating a protected method OpenDoor();	
+	void CloseDoor();							//instatiating a protected method OpenDoor();
 
 public:	
 	// Called every frame
@@ -32,17 +32,17 @@ public:
 private:
 
 	UPROPERTY(EditAnywhere)
-	float OpenAngle = 10.0f;
+	float OpenAngle = 10.0f;					//Expose Door Angle (type float) to the editor.
 
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume *PressurePlate;
+	ATriggerVolume *PressurePlate;				//Expose PressurePlate (type ATriggerVolume) to the editor. Must be dereferenced.
 
 	UPROPERTY(EditAnywhere)
-	float DoorCloseDelay = 1.f;
+	float DoorCloseDelay = 1.f;					//Expose Time of door delay to the editor.
 
-	float LastDoorOpenTime;
+	float LastDoorOpenTime;						//Create a private variable to store the time the door was last closed.
 
-	AActor *ActorThatOpens;
-	AActor *Owner; //owing door.
+	AActor *ActorThatOpens;						//This dereferenced Actor will be what actions the trigger event.
+	AActor *Owner;								//This references the door itself.
 	
 };

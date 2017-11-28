@@ -1,4 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// This Components return the position of the object it is attached to.
+
 
 #include "PositionReport.h"
 #include "Gameframework/Actor.h"
@@ -11,7 +12,6 @@ UPositionReport::UPositionReport()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	// ...
 }
 
 
@@ -20,10 +20,12 @@ void UPositionReport::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FString ObjectName = GetOwner()->GetName();
-	FString ObjectPos = GetOwner()->GetTransform().GetLocation().ToString();
+	FString ObjectName = GetOwner()->GetName();									//Set the var ObjectName to the Name of the Owner of this component.
 
-	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *ObjectPos);
+	FString ObjectPos = GetOwner()->GetTransform().GetLocation().ToString();	//Set the var Object Pos to the location, found in the -
+																				//transform of the object this is attached to.
+
+	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *ObjectPos);		//Print to Log ObjectName, ObjectPos via UE_LOG Macro
 	
 }
 

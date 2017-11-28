@@ -20,18 +20,18 @@ UOpenDoor::UOpenDoor()
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
-	Owner = GetOwner();
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
+	Owner = GetOwner();																	//Set Owner to the Actor which owns this component.
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();					//Set the var by finding our specific actor in the world.	
 }
 
-void UOpenDoor::OpenDoor()
+void UOpenDoor::OpenDoor()																//Opens the door an amount defined by our open angle.
 {								
-	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));									//Use the inbuilt function SetActorRotation
+	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));							//Use the inbuilt function SetActorRotation
 }
 
-void UOpenDoor::CloseDoor()
+void UOpenDoor::CloseDoor()																//Closes the door to a static location.
 {												
-	Owner->SetActorRotation(FRotator(0.0f, 90.0f, 0.0f));									//Use the inbuilt function SetActorRotation
+	Owner->SetActorRotation(FRotator(0.0f, 90.0f, 0.0f));								//Use the inbuilt function SetActorRotation
 }
 
 
@@ -43,15 +43,14 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (PressurePlate->IsOverlappingActor(ActorThatOpens)) {				//trigger volume class has a method that check if actor is overlapping,
 																			//importantly it asks what actor is it overlapping with.
 		OpenDoor();
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();
+		LastDoorOpenTime = GetWorld()->GetTimeSeconds();					//Store the time that the door was opened via the global TimeSeconds.
 	}  
 
-	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay) { CloseDoor(); }
-
-	// Check if it's time to close the door
-
-
-	// If the ActorThatOpens is in the volumne
+	if (GetWorld()->GetTimeSeconds() - LastDoorOpenTime > DoorCloseDelay) {	//If the current time minus the time our door was opened is greater
+																			//then the time we allow for, close the door.		
+		CloseDoor(); 
+	
+	}		
 	
 }
 
