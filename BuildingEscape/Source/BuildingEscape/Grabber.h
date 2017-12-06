@@ -3,6 +3,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Components/InputComponent.h"
 #include "Grabber.generated.h"
 
 
@@ -10,7 +12,7 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDINGESCAPE_API UGrabber : public UActorComponent
 {
 	GENERATED_BODY()
-
+  
 public:	
 	// Sets default values for this component's properties
 	UGrabber();
@@ -25,4 +27,10 @@ public:
 
 private:
 	float Reach = 100.f;					// how far we can reach infront of us with our ray cast.
+
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UInputComponent* Input = nullptr;
+
+	void Grab();				//Ray-Cast and grab whats in reach
 };

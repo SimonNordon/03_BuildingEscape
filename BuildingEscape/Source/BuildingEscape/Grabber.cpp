@@ -25,9 +25,32 @@ void UGrabber::BeginPlay()
 	Super::BeginPlay();
 
 	UE_LOG(LogTemp, Warning, TEXT("Grabber reporting for duty!"));			//Print String to World for debugging purposes.
-	
+	/// look for attached physics handle
+
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	Input = GetOwner()->FindComponentByClass<UInputComponent>();
+
+	FString OwnerName = GetOwner()->GetName();
+
+	if (PhysicsHandle) {}
+	else 
+	{	
+		UE_LOG(LogTemp, Warning, TEXT("PhysicsHandle Not Found on %s"), *OwnerName);
+	}
+	if (Input) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Input Found on %s"), *OwnerName);
+		//Input->BindAction("Grab", IE_Pressed, this, &UGrabber::UGrabber);
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Error, TEXT("Input Not Found!"));
+	}
 }
 
+void UGrabber::Grab() {
+	UE_LOG(LogTemp, Warning, TEXT("Grab Pressed"));
+}
 
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -52,7 +75,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	FString LineWarning = LineTraceEnd.ToString();							
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *LineWarning);						//Print Linetraceend for debugging purposes.
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *LineWarning);						//Print Linetraceend for debugging purposes.
 
 	DrawDebugLine(															//engine method to draw our ray cast with several parameters.
 		GetWorld(),															//we want it in our current world.
